@@ -1,0 +1,21 @@
+<div class="sidenav">
+  <%= link_to 'Basic', user_path%>
+  <%= link_to 'My Friends', friends_path%>
+</div>
+
+<div class="main">
+  <% if current_user.avatar.attached? %>
+    <%= image_tag current_user.avatar, size: "100x100" %>
+  <%end%>
+
+  <div>
+    <%= form_with model: current_user do |f|%>
+      <%= f.file_field :avatar%>
+      <%= f.submit :save%>
+    <%end%>
+  </div>
+  <div>
+    <p><strong>First Name:</strong><%= current_user.first_name%></p>
+    <p><strong>Last Name:</strong><%= current_user.last_name%></p>
+  </div>
+</div>

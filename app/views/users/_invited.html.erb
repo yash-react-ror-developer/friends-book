@@ -1,0 +1,7 @@
+<div class="col-md-6">
+  <ul class="list-group list-group-flush">
+    <% contacts.each do |contact|%>
+      <li class="list-group-item"><%= contact[:name]%><%= link_to "#{contact.status}", send_invitation_path(contact.id), class: "email"%></li>
+    <%end%>
+  </ul>
+</div>
