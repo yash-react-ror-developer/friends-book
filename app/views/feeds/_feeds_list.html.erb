@@ -1,0 +1,5 @@
+<ul class="list-group">
+  <% feeds.each do |feed|%>
+    <li class="list-group-item"><%= feed.title %>&nbsp|<%= link_to 'Edit', edit_user_feed_path(current_user, feed)%>&nbsp|&nbsp<%= link_to 'Show', user_feed_path(current_user, feed)%>&nbsp|&nbsp<%= link_to 'Delete', user_feed_path(current_user, feed), method: :Delete%>&nbsp|&nbsp<% unless feed.marked %> <%= link_to 'Mark as Bookmark', user_feed_book_marked_path(current_user, feed), method: :patch, remote: true%> <%else%> <%= link_to 'Marked', "#"%><%end%></li>
+  <% end %>
+</ul>

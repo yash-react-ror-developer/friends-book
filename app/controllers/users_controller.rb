@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   def show;end
 
+  def search_user
+    @user = User.find_by(email: params[:search])
+  end
+
   def update
     current_user.avatar.attach(params[:user][:avatar])
     redirect_to user_path

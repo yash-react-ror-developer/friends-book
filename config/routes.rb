@@ -4,8 +4,16 @@ Rails.application.routes.draw do
   }
 
   root 'homes#index'
-  resources :feeds, only: [:index]
-  resources :users
+
+  resources :users do
+    resources :feeds do
+      patch 'book_marked'
+    end
+  end
+
+  get 'search_user', to: "users#search_user"
+
+  get 'marked_feeds', to: "feeds#marked_feeds"
 
   get "/contacts/failure", to: "users#friends"
   get "/friends", to: "users#friends", as: "friends"

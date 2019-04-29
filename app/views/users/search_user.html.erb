@@ -1,0 +1,21 @@
+<div class="col-md-12">
+  <%= form_with url: search_user_path, method: :get, local: true do |f|%>
+    <div class="col-md-8 form-group">
+      <%= f.email_field :search, class: "form-control", placeholder: "Enter Email To Search"%>
+    </div>
+    <div class="col-md-4 form-group">
+      <%= f.submit :search, class: "btn btn-primary" %>
+    </div>
+  <%end%>
+
+</div>
+
+<% unless @user.nil? %>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <%= @user.email%>
+      </div>
+    </div>
+  </div>
+<%end%>

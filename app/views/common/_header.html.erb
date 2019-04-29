@@ -1,13 +1,40 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <% unless user_signed_in? %>
-    <a class="navbar-brand" href="#">Friends-Book</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-  <%end%>
-
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <% unless user_signed_in? %>
+<% if user_signed_in? %>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+         <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Feeds
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <%= link_to 'Index', user_feeds_path(current_user), class: "dropdown-item"%>
+              <%= link_to 'New', new_user_feed_path(current_user), class: "dropdown-item"%>
+            </div>
+          </li>
+        <li class="nav-item">
+          <%= link_to 'Bookmark', marked_feeds_path, class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#"></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Profile
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <%= link_to 'Basic', user_path(current_user), class: "dropdown-item"%>
+            <%= link_to 'Search a friend', search_user_path, class: "dropdown-item"%>
+          </div>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, class: "nav-link"%>
+        </li>
+      </ul>
+    </div>
+  </nav>
+<% else %>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
           <%= link_to 'Sign In', new_user_session_path, class: "nav-link"%>
@@ -16,21 +43,7 @@
           <%= link_to 'Sign Up', new_user_registration_path, class: "nav-link"%>
         </li>
       </ul>
-    <%else%>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <%= link_to 'Feeds', "#", class: "nav-link"%>
-        </li>
-        <li class="nav-item">
-          <%= link_to 'Bookmarks', "#", class: "nav-link"%>
-        </li>
-        <li class="nav-item">
-          <%= link_to 'Profile', user_path(current_user), class: "nav-link"%>
-        </li>
-        <li class="nav-item">
-          <%= link_to 'Sign Out', destroy_user_session_path, class: "nav-link", method: :delete%>
-        </li>
-      </ul>
-    <%end%>
-  </div>
-</nav>
+    </div>
+  </nav>
+<% end %>
+
