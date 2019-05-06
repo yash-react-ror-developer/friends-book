@@ -21,7 +21,11 @@ gem 'devise_invitable', '~> 2.0.0'
 
 gem 'omniauth-google-oauth2'
 
+gem 'omniauth-facebook'
+
 gem 'bootstrap', '~> 4.3.1'
+
+gem "jquery-ui-rails"
 
 gem 'rails', '~> 5.2'
 # Use sqlite3 as the database for Active Record

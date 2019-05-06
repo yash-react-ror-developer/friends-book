@@ -15,6 +15,10 @@ Rails.application.routes.draw do
 
   get 'marked_feeds', to: "feeds#marked_feeds"
 
+  post 'send_request', to: "users#send_request", as: "send_request"
+
+  delete 'cancel_request', to: "users#cancel_request", as: "cancel_request"
+
   get "/contacts/failure", to: "users#friends"
   get "/friends", to: "users#friends", as: "friends"
   get "/contacts/:importer/callback" => "users#friends"

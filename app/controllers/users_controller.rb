@@ -3,6 +3,19 @@ class UsersController < ApplicationController
 
   def search_user
     @user = User.find_by(email: params[:search])
+    if @user
+      @friendship = Friendship.where("user_id = ? AND friend_id = ?", current_user.id, @user.id).first
+    end
+  end
+
+  def send_request
+    @friendship = current_user.friendships.create(status: false, friend_id: params[:user_id], user_id: current_user.id)
+    @user = User.find(params[:user_id])
+  end
+
+  def cancel_request
+    Friendship.where("user_id = ? AND friend_id = ?", current_user.id, params[:user_id]).first.delete
+    @user = User.find(params[:user_id])
   end
 
   def update

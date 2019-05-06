@@ -1,0 +1,15 @@
+<% unless user.nil? %>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <%= user.email%>
+        <% if friendship && friendship.status == "f" %>
+          <button id=<%= user.id%> class="btn btn-primary cancel-request" style="margin-left: 275px">Cancel Request</button>
+        <% else %>
+          <button id=<%= user.id%> class="btn btn-primary send-request" style="margin-left: 275px">Send Request</button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<%end%>
+

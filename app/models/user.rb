@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2]
+         :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
 
   has_many :friendships
   has_many :feeds
@@ -15,6 +15,7 @@ class User < ApplicationRecord
     unless user
       user = User.create(email: data['email'], first_name: data['first_name'], last_name: data['last_name'], password: Devise.friendly_token[0,20])
     end
+
     # Uncomment the section below if you want users to be created if they don't exist
     # unless user
     #     user = User.create(name: data['name'],
