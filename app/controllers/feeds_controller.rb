@@ -2,7 +2,7 @@ class FeedsController < ApplicationController
   before_action :get_feed, only: [:edit, :update, :show, :destroy]
 
   def index
-    @feeds = current_user.feeds
+    filter_feeds
   end
 
   def new
@@ -12,7 +12,7 @@ class FeedsController < ApplicationController
   def book_marked
     @feed = Feed.find(params[:feed_id])
     @feed.update(marked: true)
-    @feeds = current_user.feeds
+    redirect_to user_feeds_path(current_user)
   end
 
   def create
@@ -45,12 +45,36 @@ class FeedsController < ApplicationController
   end
 
   def marked_feeds
-    @feeds = current_user.feeds.paginate(page: params[:page], per_page: 10).where(marked: true)
+    @feeds = filter_feeds
+    @marked_feeds = []
+    @feeds.each do |feed|
+      @marked_feeds.push(feed) if feed.marked
+    end
+  end
+
+  def filter_feeds
+    @filter_feeds = []
+    @feeds = Feed.all.order(updated_at: :desc)
+    @feeds.each do |feed|
+      if feed.permission != "friends"
+        if feed.permission == "only me"
+          @filter_feeds.push(feed) if current_user.id == feed.user_id
+        else
+          @filter_feeds.push(feed)
+        end
+      else
+        friendship = Friendship.where("user_id = ? AND friend_id = ?", current_user.id, feed.user_id).first
+        friendship = Friendship.where("user_id = ? AND friend_id = ?",feed.user_id, current_user.id).first unless friendship
+        @filter_feeds.push(feed) if (friendship && friendship.status == "t") || (current_user.id == feed.user_id)
+      end
+    end
+
+    return @filter_feeds
   end
 
   private
     def params_feed
-      params.require(:feed).permit(:title, :description)
+      params.require(:feed).permit(:title, :description, :permission)
     end
 
     def get_feed

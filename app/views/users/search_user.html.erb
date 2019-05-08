@@ -1,32 +1,44 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <div class="col-md-12">
-  <%= form_with url: search_user_path, method: :get, local: true do |f|%>
-    <div class="col-md-8 form-group">
-      <%= f.email_field :search, class: "form-control", placeholder: "Enter Email To Search"%>
+  <%= form_with url: search_user_path, method: :get do |f|%>
+    <div class="ui-widget col-md-8 form-group">
+      <%= f.text_field :email, id: "search-field", class: "form-control", autocomplete: "off" %>
     </div>
     <div class="col-md-4 form-group">
       <%= f.submit :search, class: "btn btn-primary" %>
     </div>
+    <div id="auto-complete-data">
+    </div>
   <%end%>
 </div>
 
-<div id="search-result">
-  <%= render partial: "search_user_result", locals: {user: @user, friendship: @friendship} %>
-</div>
+  <div id="search-result">
+  </div>
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $(".send-request").click(function(){
-      var id = this.id
-      $.ajax({
-        type: "Post",
-        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-        url: "send_request",
-        data: {user_id: id},
-        success: function(response){
-        },
-        failure: function(response){},
-      })
-    })
+    $("#search-field" ).autocomplete({
+      source: function( request, response ) {
+        $.ajax( {
+          url: "search_user",
+          dataType: "json",
+          data: {
+            search: request.term
+          },
+          success: function( data ) {
+            response( data );
+          }
+        } );
+      },
+
+      minLength: 1,
+      select: function( event, ui ) {
+        var item = "<div class='card col-md-6'>"
+        + "<div class='card-body'>" + ui.item.value + "<button class='btn btn-primary send-request' style='margin-left: 200px;' id='"+ui.item.value+"'>" + "Send Request" + "</button>" +  "</div>"
+        + "</div>"
+        $("#search-result").html(item);
+      }
+    });
 
     $(".cancel-request").click(function(){
       var id = this.id
@@ -42,5 +54,19 @@
     })
 
   })
+
+  $('body').on('click', '.send-request', function() {
+    var email = this.id
+    $.ajax({
+      type: "Post",
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      url: "send_request",
+      data: {email: email},
+      success: function(response){
+      },
+      failure: function(response){},
+    })
+  });
+
 
 </script>

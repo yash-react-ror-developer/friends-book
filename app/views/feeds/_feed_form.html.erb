@@ -9,6 +9,10 @@
       <%= f.text_area :description, class: "form-control"%>
     </div>
     <div class="form-group">
+      <%= f.label :permission%>
+      <%= f.select :permission, options_for_select(["public","friends","only me"]),{}, class: "form-control"%>
+    </div>
+    <div class="form-group">
       <%= f.submit :create, class: "btn btn-primary" %>
     </div>
   <%end%>

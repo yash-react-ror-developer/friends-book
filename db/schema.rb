@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_06_062704) do
+ActiveRecord::Schema.define(version: 2019_05_08_124712) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_062704) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "permission"
   end
 
   create_table "friendships", force: :cascade do |t|
@@ -57,6 +58,13 @@ ActiveRecord::Schema.define(version: 2019_05_06_062704) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
+  end
+
+  create_table "userbookmarks", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "feed_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

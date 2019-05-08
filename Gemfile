@@ -27,6 +27,12 @@ gem 'bootstrap', '~> 4.3.1'
 
 gem "jquery-ui-rails"
 
+gem 'redis-rails'
+
+gem 'sidekiq'
+
+gem 'rails-jquery-autocomplete'
+
 gem 'rails', '~> 5.2'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'

@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   has_many :friendships
   has_many :feeds
+  has_many :userbookmarks
+  has_many :bookmarkfeeds, through: :userbookmarks, source: :feeds
   has_many :contacts, dependent: :destroy
   has_one_attached :avatar
 
