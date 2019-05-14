@@ -2,7 +2,7 @@ class FeedsController < ApplicationController
   before_action :get_feed, only: [:edit, :update, :show, :destroy]
 
   def index
-    filter_feeds
+    @filter_feeds = Feed.user_feeds(current_user)
   end
 
   def new
@@ -10,8 +10,7 @@ class FeedsController < ApplicationController
   end
 
   def book_marked
-    @feed = Feed.find(params[:feed_id])
-    @feed.update(marked: true)
+    current_user.userbookmarks.create(feed_id: params[:feed_id])
     redirect_to user_feeds_path(current_user)
   end
 
@@ -45,32 +44,10 @@ class FeedsController < ApplicationController
   end
 
   def marked_feeds
-    @feeds = filter_feeds
-    @marked_feeds = []
-    @feeds.each do |feed|
-      @marked_feeds.push(feed) if feed.marked
-    end
+    @marked_feeds = current_user.bookmarks
   end
 
-  def filter_feeds
-    @filter_feeds = []
-    @feeds = Feed.all.order(updated_at: :desc)
-    @feeds.each do |feed|
-      if feed.permission != "friends"
-        if feed.permission == "only me"
-          @filter_feeds.push(feed) if current_user.id == feed.user_id
-        else
-          @filter_feeds.push(feed)
-        end
-      else
-        friendship = Friendship.where("user_id = ? AND friend_id = ?", current_user.id, feed.user_id).first
-        friendship = Friendship.where("user_id = ? AND friend_id = ?",feed.user_id, current_user.id).first unless friendship
-        @filter_feeds.push(feed) if (friendship && friendship.status == "t") || (current_user.id == feed.user_id)
-      end
-    end
 
-    return @filter_feeds
-  end
 
   private
     def params_feed

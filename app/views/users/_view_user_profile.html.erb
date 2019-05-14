@@ -1,0 +1,28 @@
+<% if user.avatar.attached? %>
+  <%= image_tag user.avatar, size: "100x100" %>
+<%else%>
+  <img src="/assets/default_user_image.jpg">
+<%end%>
+
+<div>
+  <p><strong>First Name:</strong><%= user.first_name%></p>
+  <p><strong>Last Name:</strong><%= user.last_name%></p>
+</div>
+<% if status == 'sent' %>
+  <div>
+    <%= link_to 'Cancel Request', cancel_request_path(user, page_flag: "view_profile"), method: :delete,  class: "btn btn-danger", remote: true%>
+  </div>
+<% elsif status == 'received' %>
+  <div>
+    <%= link_to 'Accept Request', accept_user_path(user), method: :patch, class: "btn btn-success"%>
+    <%= link_to 'Cancel Request', cancel_request_path(user, page_flag: "view_profile", flag: "received"), class: "btn btn-danger", remote: true, method: :delete%>
+  </div>
+<% elsif status == 'friends' %>
+  <div>
+    <%= link_to 'Unfriend', cancel_request_path(user, page_flag: "view_profile", flag: @flag), method: :delete, class: "btn btn-danger", remote: true%>
+    </div>
+<%else%>
+  <div>
+    <%= link_to 'Send Request', send_request_path(user), method: :post, class: "btn btn-primary", remote: true%>
+  </div>
+<%end%>

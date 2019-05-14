@@ -1,0 +1,5 @@
+<% if @flag == 'view_profile'%>
+  $("#user-details").html("<%= escape_javascript(render(partial: 'users/view_user_profile', locals: {user: @user, status: 'nota'}))%>")
+<%else%>
+  $(".invited_user_list").html("<%= escape_javascript(render(partial: 'invited_user_list', locals: {sent_invitations: @sent_invitations, received_invitations: @received_invitations}))%>")
+<%end%>

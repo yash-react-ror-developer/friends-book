@@ -1,7 +1,8 @@
-<div class="sidenav">
-  <a href="#">Friend List</a>
-  <a href="/contacts/gmail">Invite Friend's</a>
-</div>
+<% if @contacts.count == 0 %>
+  <div class="sidenav">
+    <a href="/contacts/gmail">Invite Friend's</a>
+  </div>
+<%end%>
 
 <% if @contacts.count != 0 %>
   <%= render partial: "invited", locals: {contacts: @contacts}%>

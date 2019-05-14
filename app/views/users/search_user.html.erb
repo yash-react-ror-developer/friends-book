@@ -26,7 +26,12 @@
             search: request.term
           },
           success: function( data ) {
-            response( data );
+            var emails = []
+            newData = data
+            $.each(data, function( index, value ) {
+              emails.push(value.email)
+            });
+            response( emails );
           }
         } );
       },
@@ -34,7 +39,7 @@
       minLength: 1,
       select: function( event, ui ) {
         var item = "<div class='card col-md-6'>"
-        + "<div class='card-body'>" + ui.item.value + "<button class='btn btn-primary send-request' style='margin-left: 200px;' id='"+ui.item.value+"'>" + "Send Request" + "</button>" +  "</div>"
+        + "<div class='card-body'>" + ui.item.value + "<a href='/users/view_profile?email="+ui.item.value+"' class='btn btn-primary view-profile' style='margin-left: 200px;'>" + "View Profile" + "</a>" +  "</div>"
         + "</div>"
         $("#search-result").html(item);
       }
@@ -47,26 +52,10 @@
         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
         url: "cancel_request",
         data: {user_id: id},
-        success: function(response){
-        },
-        failure: function(response){},
       })
     })
 
   })
-
-  $('body').on('click', '.send-request', function() {
-    var email = this.id
-    $.ajax({
-      type: "Post",
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-      url: "send_request",
-      data: {email: email},
-      success: function(response){
-      },
-      failure: function(response){},
-    })
-  });
 
 
 </script>

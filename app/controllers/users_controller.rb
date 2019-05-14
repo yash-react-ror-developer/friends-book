@@ -4,39 +4,22 @@ class UsersController < ApplicationController
 
   def search_user
     @users = User.where("email like ?", "%#{params[:search]}%") if params[:search]
-    render json: @users.map(&:email) if @users
-  end
-
-  def send_request
-    @user = User.find_by_email(params[:email])
-    @friendship = current_user.friendships.create(status: false, friend_id: @user.id, user_id: current_user.id)
-    redirect_to invited_friends_path
-  end
-
-  def invited_friends
-    @users = []
-    @status = []
-    @friendships = Friendship.where("user_id = ? OR friend_id = ?", current_user.id, current_user.id).where(status: "f")
-    @friendships.each do |friendship|
-      if friendship.friend_id == current_user.id
-        user = User.find(friendship.user_id)
-        @users.push(user)
-        @status.push("received")
-      else
-        user = User.find(friendship.friend_id)
-        @users.push(user)
-        @status.push("sent")
+    @search_result = []
+    if @users
+      @users.each do |user|
+        if current_user.friendships.find_by_friend_id(user.id) || current_user.inverse_friendships.find_by_user_id(user.id)
+          @search_result.push({email: user.email, status: 'requested'})
+        else
+          if current_user.id != user.id
+            @search_result.push({email: user.email, status: 'not requested'})
+          end
+        end
       end
+      render json: @search_result
+    else
+      render 'search_user'
     end
-  end
 
-  def cancel_request
-    @friendship = Friendship.where("user_id = ? AND friend_id = ?", current_user.id, params[:id]).first
-    unless @friendship
-      @friendship = Friendship.where("user_id = ? AND friend_id = ?", params[:id], current_user.id).first
-    end
-    @friendship.delete
-    redirect_to invited_friends_path
   end
 
   def update
@@ -44,40 +27,22 @@ class UsersController < ApplicationController
     redirect_to user_path
   end
 
-  def friends
-    if current_user.contacts.count == 0
-      @contacts = request.env['omnicontacts.contacts']
-      if @contacts
-        @contacts.each do |contact|
-          current_user.contacts.create(email: contact[:email], name: contact[:name], status: "invite")
-        end
-      end
-    end
-    @contacts = current_user.contacts
-  end
-
-  def send_invitation
-    @contact = Contact.find(params[:id])
-    InvitationMailer.invite_user(@contact.email).deliver
-    @contact.update(status: "invited")
-    redirect_to friends_path
-  end
-
-  def accept_user
-    @friendship = Friendship.where("user_id = ? AND friend_id = ?", params[:id], current_user.id).first
-    @friendship.update(status: true)
-    redirect_to friend_list_path
-  end
-
-  def friend_list
-    @friends = []
-    @friendships = Friendship.where("user_id = ? OR friend_id = ?", current_user.id, current_user.id).where(status: "t")
-    @friendships.each do |friendship|
-      if friendship.friend_id == current_user.id
-        @friends.push(User.find(friendship.user_id))
-      else
-        @friends.push(User.find(friendship.friend_id))
-      end
+  def view_profile
+    @user = User.where(email: params[:email]).first
+    if current_user.friendships.where(friend_id: @user.id, status: false).first
+      @status = "sent"
+    elsif current_user.inverse_friendships.where(user_id: @user.id, status: false).first
+      @status = "received"
+    elsif current_user.friendships.where(friend_id: @user.id, status: true).first
+      @status = "friends"
+      @flag = "sent"
+    elsif current_user.inverse_friendships.where(user_id: @user.id, status: true).first
+      @status = "friends"
+      @flag = "received"
+    else
+      @status = "nota"
     end
   end
+
+
 end
