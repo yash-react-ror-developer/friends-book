@@ -1,0 +1,6 @@
+$('.feeds-list').append("<%= j render(partial: 'feeds_list', locals: {feeds: @filter_feeds}) %>");
+<% if @filter_feeds.next_page %>
+  $('#pagination').replaceWith('<%= j will_paginate(@filter_feeds) %>');
+<% else %>
+  $('#pagination').remove();
+<% end %>

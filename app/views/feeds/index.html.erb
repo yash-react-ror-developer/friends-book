@@ -1,4 +1,5 @@
 <h3><%= current_user.first_name %> your feeds</h3>
-<div class="col-md-6" id="feeds-list">
+<div class="col-md-6 feeds-list">
   <%= render partial: "feeds_list", locals: {feeds: @filter_feeds}%>
 </div>
+<%= will_paginate @filter_feeds, id: "pagination" %>

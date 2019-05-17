@@ -1,0 +1,13 @@
+<div class="col-md-6">
+  <a href="/contacts/gmail" class="btn btn-primary">Invite friends</a>
+  <ul class="list-group">
+    <% @contacts.each do |contact| %>
+      <li class="list-group-item">
+        <%= contact.email %>
+        <%= link_to 'Invite', send_invitation_path(contact.id), class: "btn btn-primary", style: "margin-left: 300px;"%>
+      </li>
+    <%end%>
+  </ul>
+</div>
+
+<%= will_paginate @contacts %>

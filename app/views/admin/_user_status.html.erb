@@ -1,0 +1,5 @@
+<% unless user.activate %>
+  <%= link_to 'Activate', activate_user_path(user), method: :patch, class: "btn btn-primary", remote: true%>
+<% else %>
+  <%= link_to 'De-activate', deactivate_user_path(user), method: :delete, class: "btn btn-primary", remote: true%>
+<%end%>

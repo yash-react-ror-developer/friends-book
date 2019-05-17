@@ -31,6 +31,8 @@ gem 'redis-rails'
 
 gem 'sidekiq'
 
+gem 'sidekiq-status'
+
 gem 'rails-jquery-autocomplete'
 
 gem 'rails', '~> 5.2'

@@ -18,8 +18,17 @@ class User < ApplicationRecord
     data = access_token.info
     user = User.find_by(email: data['email'])
     unless user
-      user = User.create(email: data['email'], first_name: data['first_name'] || data['name'].split(" ")[0], last_name: data['last_name']  || data['name'].split(" ")[1], password: Devise.friendly_token[0,20])
+      provider = access_token[:provider] == 'google_oauth2' ? 'google' : 'facebook'
+      user = User.create(email: data['email'], first_name: data['first_name'] || data['name'].split(" ")[0], last_name: data['last_name']  || data['name'].split(" ")[1], password: Devise.friendly_token[0,20], provider: provider)
     end
     user
   end
+
+  def active_for_authentication?
+    super && activate # i.e. super && self.is_active
+  end
+
+  # def inactive_message
+  #   "You have signed up successfully. However, we could not sign you in because your account is not yet activated."
+  # end
 end

@@ -1,1 +1,2 @@
-$("#feeds-list").html("<%= escape_javascript(render(partial: 'feeds_list', locals: {feeds: @feeds}))%>")
+$("#feed-<%= @feed.id%>").html("<%= escape_javascript(render(partial: 'feed', locals: {feed: @feed}))%>")
+$("#alert").html("<%= escape_javascript(render(partial: 'common/alert_message'))%>")

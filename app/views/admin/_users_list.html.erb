@@ -1,0 +1,5 @@
+<% users.each_with_index do |user, index|%>
+  <tr id="delete-<%= user.id%>">
+    <%= render partial: 'user_record', locals: {user: user, index: index}%>
+  </tr>
+<%end%>

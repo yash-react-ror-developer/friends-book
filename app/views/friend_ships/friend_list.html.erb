@@ -1,7 +1,10 @@
 <div class="col-md-6">
   <ul class="list-group">
     <% @friends.each do |friend|%>
-      <li class="list-group-item"><%= friend.email%></li>
+      <li class="list-group-item">
+        <%= friend.email%>
+        <%= link_to 'View Profile', view_profile_users_path(email: friend.email), class: "btn btn-primary", style: "margin-left: 290px;"%>
+      </li>
     <%end%>
   </ul>
 </div>

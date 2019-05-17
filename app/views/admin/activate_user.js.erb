@@ -1,0 +1,2 @@
+$("#user-<%= @user.id %>").html("<%= escape_javascript(render(partial: 'user_status', locals: { user: @user })) %>");
+$("#alert").html("<%= escape_javascript(render(partial: 'common/alert_message'))%>");

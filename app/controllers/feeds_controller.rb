@@ -2,7 +2,11 @@ class FeedsController < ApplicationController
   before_action :get_feed, only: [:edit, :update, :show, :destroy]
 
   def index
-    @filter_feeds = Feed.user_feeds(current_user)
+    @filter_feeds = Feed.user_feeds(current_user).paginate(page: params[:page], per_page: 12)
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def new
@@ -10,14 +14,19 @@ class FeedsController < ApplicationController
   end
 
   def book_marked
-    current_user.userbookmarks.create(feed_id: params[:feed_id])
-    redirect_to user_feeds_path(current_user)
+    bookmark = current_user.userbookmarks.create(feed_id: params[:feed_id])
+    if bookmark
+      flash[:notice] = "marked successfully"
+    else
+      flash[:alert] = "something went wrong"
+    end
+    @feed = Feed.find(params[:feed_id])
   end
 
   def create
     @feed = current_user.feeds.create(params_feed)
     if @feed.errors.messages.empty?
-      redirect_to user_feeds_path(current_user)
+      redirect_to feeds_path
     else
       flash[:alert] = "Please fill all the fields"
       render 'new'
@@ -39,12 +48,16 @@ class FeedsController < ApplicationController
   end
 
   def destroy
-    @feed.delete
-    redirect_to user_feeds_path(current_user)
+    if @feed.delete
+      flash[:notice] = "Feed deleted successfully"
+    else
+      flash[:alert] = "something went wrong"
+    end
+    redirect_to feeds_path
   end
 
   def marked_feeds
-    @marked_feeds = current_user.bookmarks
+    @marked_feeds = current_user.bookmarks.paginate(page: params[:page], per_page: 10)
   end
 
 

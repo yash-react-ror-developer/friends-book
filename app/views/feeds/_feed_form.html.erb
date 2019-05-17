@@ -1,5 +1,5 @@
 <div class="col-md-6">
-  <%= form_with model: [current_user, feed], local: true do |f|%>
+  <%= form_with model: feed, local: true do |f|%>
     <div class="form-group">
       <%= f.label :title%>
       <%= f.text_field :title, class: "form-control"%>

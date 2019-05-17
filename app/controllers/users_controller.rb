@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   def show;end
 
   def search_user
-    @users = User.where("email like ?", "%#{params[:search]}%") if params[:search]
+    @users = User.where("email like ? AND  activate = ?", "%#{params[:search]}%", true) if params[:search]
     @search_result = []
     if @users
       @users.each do |user|

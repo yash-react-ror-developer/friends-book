@@ -1,7 +1,10 @@
 <% if sent_invitations %>
   <ul class="list-group col-md-6">
     <% sent_invitations.each do |sent_invitation|%>
-      <li class="list-group-item"><%= sent_invitation.email %><%= link_to 'Cancel', cancel_request_path(sent_invitation.id, flag: "sent"), method: :delete,class: "btn btn-danger", style: "margin-left:260px", remote: true%></li>
+      <li class="list-group-item">
+        <%= sent_invitation.email %>
+        <%= link_to 'View Profile', view_profile_users_path(email: sent_invitation.email), class: "btn btn-primary", style: "margin-left: 290px;"%>
+      </li>
     <%end%>
   </ul>
 <%end%>
@@ -9,7 +12,10 @@
 <% if received_invitations %>
   <ul class="list-group col-md-6">
     <% received_invitations.each do |received_invitation|%>
-      <li class="list-group-item"><%= received_invitation.email %><%= link_to 'Accept', "#", class: "btn btn-success", style: "margin-left:260px"%><%= link_to 'Cancel', cancel_request_path(received_invitation.id, flag: "received"), method: :delete, class: "btn btn-danger", remote: true %></li>
+      <li class="list-group-item">
+        <%= received_invitation.email %>
+        <%= link_to 'View Profile', view_profile_users_path(email: received_invitation.email), class: "btn btn-primary", style: "margin-left: 290px;"%>
+      </li>
     <%end%>
   </ul>
 <%end%>

@@ -3,24 +3,8 @@ class Feed < ApplicationRecord
   belongs_to :user
   #belongs_to :userbookmark
 
-  def Feed.user_feeds(user)
-    filter_feeds = []
-    feeds = Feed.all.order(updated_at: :desc)
-    feeds.each do |feed|
-      if feed.permission != "friends"
-        if feed.permission == "only me"
-          filter_feeds.push(feed) if current_user.id == feed.user_id
-        else
-          filter_feeds.push(feed)
-        end
-      else
-        if user.friendships.where(friend_id: feed.user_id, status: true).first || user.friendships.where(user_id: feed.user_id, status: true).first
-          filter_feeds.push(feed)
-        else
-          filter_feeds.push(feed) if user.id == feed.user_id
-        end
-      end
-    end
-    filter_feeds
+  def self.user_feeds(user)
+    friend_ids = user.friendships.where(status: true).map(&:friend_id) + user.inverse_friendships.where(status: true).map(&:user_id) + [user.id]
+    filter_feeds =  Feed.where(permission: "public").or(Feed.where("permission = ? AND user_id = ?", "only me", user.id)).or(Feed.where(permission: "friends", user_id: friend_ids))
   end
 end

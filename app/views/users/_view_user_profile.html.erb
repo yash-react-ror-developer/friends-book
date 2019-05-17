@@ -14,7 +14,7 @@
   </div>
 <% elsif status == 'received' %>
   <div>
-    <%= link_to 'Accept Request', accept_user_path(user), method: :patch, class: "btn btn-success"%>
+    <%= link_to 'Accept Request', accept_user_path(user), method: :patch, class: "btn btn-success", remote: true%>
     <%= link_to 'Cancel Request', cancel_request_path(user, page_flag: "view_profile", flag: "received"), class: "btn btn-danger", remote: true, method: :delete%>
   </div>
 <% elsif status == 'friends' %>

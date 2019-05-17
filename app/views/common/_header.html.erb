@@ -7,8 +7,8 @@
               Feeds
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <%= link_to 'Index', user_feeds_path(current_user), class: "dropdown-item"%>
-              <%= link_to 'New', new_user_feed_path(current_user), class: "dropdown-item"%>
+              <%= link_to 'Index', feeds_path, class: "dropdown-item"%>
+              <%= link_to 'New', new_feed_path, class: "dropdown-item"%>
             </div>
           </li>
         <li class="nav-item">
@@ -26,7 +26,7 @@
             <%= link_to 'Search a friend', search_user_path, class: "dropdown-item"%>
             <%= link_to 'Invited friends', invited_users_path, class: "dropdown-item"%>
             <%= link_to 'Friend list', friend_list_path, class: "dropdown-item"%>
-            <%= link_to 'Follow Contacts', friends_path, class: "dropdown-item"%>
+            <%= link_to 'Invite Social Friends', friends_path, class: "dropdown-item"%>
           </div>
         </li>
         <li class="nav-item">

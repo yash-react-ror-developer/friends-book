@@ -1,0 +1,7 @@
+<th scope="row"><%= index +1%></th>
+<td><%= user.first_name%></td>
+<td><%= user.last_name%></td>
+<td id=<%= "user-#{user.id}" %>>
+  <%= render partial: "user_status", locals: {user: user}%>
+</td>
+<td><%= link_to 'Delete', delete_user_path(user), method: :delete, class: "btn btn-primary", remote: true%></td>

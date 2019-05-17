@@ -1,0 +1,2 @@
+$("#alert").html("<%= escape_javascript(render(partial: 'common/alert_message'))%>")
+$("#user-details").html("<%= escape_javascript(render(partial: 'users/view_user_profile', locals: {user: @user, status: 'friends'}))%>")

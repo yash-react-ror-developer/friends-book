@@ -4,8 +4,8 @@
     <h6 class="card-subtitle mb-2 text-muted"><%= @feed.title %></h6>
     <p class="card-text"><%= @feed.description %></p>
     <% if current_user.id == @feed.user_id %>
-      <%= link_to 'Edit', edit_user_feed_path(current_user,@feed), class: "card-link"%>
-      <%= link_to 'Delete', user_feed_path(current_user,@feed), method: :delete, class: "card-link"%>
+      <%= link_to 'Edit', edit_feed_path(@feed), class: "card-link"%>
+      <%= link_to 'Delete', feed_path(@feed), method: :delete, class: "card-link"%>
     <%end%>
   </div>
 </div>
