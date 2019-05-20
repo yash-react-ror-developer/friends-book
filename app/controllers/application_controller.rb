@@ -14,10 +14,6 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    if resource.role == 'admin' #Enum
-      show_users_path
-    else
-      feeds_path
-    end
+    feeds_path
   end
 end

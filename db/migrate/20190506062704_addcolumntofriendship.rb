@@ -1,5 +1,5 @@
 class Addcolumntofriendship < ActiveRecord::Migration[5.2]
   def change
-    add_column :friendships, :status, :string
+    add_column :friendships, :status, :boolean
   end
 end

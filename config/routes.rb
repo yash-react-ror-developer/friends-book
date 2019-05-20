@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
@@ -17,13 +19,6 @@ Rails.application.routes.draw do
     patch 'book_marked'
   end
 
-  get 'show_users', to: "admin#show_users", as: "show_users"
-
-  patch 'activate_user/:id', to: 'admin#activate_user', as: "activate_user"
-
-  delete 'deactivate_user/:id', to: 'admin#deactivate_user', as: "deactivate_user"
-
-  delete 'delete_user/:id', to: 'admin#delete_user', as: "delete_user"
 
   post 'send_request/:id', to: "friend_ships#send_request", as: "send_request"
 
