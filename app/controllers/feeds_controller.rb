@@ -1,5 +1,6 @@
 class FeedsController < ApplicationController
   before_action :get_feed, only: [:edit, :update, :show, :destroy]
+  before_action :authenticate_user!
 
   def index
     @filter_feeds = Feed.user_feeds(current_user).paginate(page: params[:page], per_page: 12)

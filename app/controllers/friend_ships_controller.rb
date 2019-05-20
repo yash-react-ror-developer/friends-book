@@ -1,4 +1,5 @@
 class FriendShipsController < ApplicationController
+  before_action :authenticate_user!
 
   def send_request
     @user = User.find(params[:id])
@@ -43,10 +44,6 @@ class FriendShipsController < ApplicationController
     @contacts.each do |contact|
       current_user.contacts.find_or_create_by(email: contact[:email])
     end
-    # binding.pry
-
-    # current_user.contacts.find_or_create_by(email: @contacts.pluck(:emails).flatten.pluck(:email))
-
     @contacts = current_user.contacts.paginate(page: params[:page], per_page: 10)
   end
 

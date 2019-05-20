@@ -25,7 +25,7 @@ class User < ApplicationRecord
   end
 
   def active_for_authentication?
-    super && activate # i.e. super && self.is_active
+    super && activate
   end
 
   # def inactive_message
