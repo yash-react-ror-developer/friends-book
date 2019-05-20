@@ -24,9 +24,9 @@ class User < ApplicationRecord
     user
   end
 
-  def active_for_authentication?
-    super && activate # i.e. super && self.is_active
-  end
+  # def active_for_authentication?
+  #   super && activate # i.e. super && self.is_active
+  # end
 
   # def inactive_message
   #   "You have signed up successfully. However, we could not sign you in because your account is not yet activated."
